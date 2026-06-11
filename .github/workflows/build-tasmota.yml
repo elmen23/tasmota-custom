@@ -12,6 +12,11 @@ jobs:
           python-version: '3.11'
       - name: Install PlatformIO
         run: pip install platformio
+      - name: Disable unwanted features
+        run: |
+          sed -i '/#ifndef USE_KNX/,/^#endif/d' tasmota/include/tasmota_configurations_ESP32.h
+          sed -i '/^#define USE_SONOFF_SPM/d' tasmota/include/tasmota_configurations_ESP32.h
+          sed -i '/^#define USE_DISPLAY_TM1621_SONOFF/d' tasmota/include/tasmota_configurations_ESP32.h
       - name: Build tasmota32
         run: pio run -e tasmota32 -j 4
       - name: Upload firmware
